@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/easy-Code/easy-Code.iml" filepath="$PROJECT_DIR$/easy-Code/easy-Code.iml" />
       <module fileurl="file://$PROJECT_DIR$/my_hejiayun.iml" filepath="$PROJECT_DIR$/my_hejiayun.iml" />
       <module fileurl="file://$PROJECT_DIR$/myhjy-community/myhjy-community.iml" filepath="$PROJECT_DIR$/myhjy-community/myhjy-community.iml" />
     </modules>

@@ -3,6 +3,7 @@ package com.hhu.myhjycommunity.web.controller;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hhu.myhjycommunity.common.constant.HttpStatus;
+import com.hhu.myhjycommunity.common.controller.BaseController;
 import com.hhu.myhjycommunity.common.core.page.PageResult;
 import com.hhu.myhjycommunity.common.utils.ServletUtils;
 import com.hhu.myhjycommunity.community.domain.HjyCommunity;
@@ -18,26 +19,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/community")
-public class HjyCommunityController {
+public class HjyCommunityController extends BaseController {
     @Resource
     private HjyCommunityServiceImpl hjyCommunityService;
 
     @GetMapping("/list")
     public PageResult list(HjyCommunity hjyCommunity){
-        Integer pageNum = ServletUtils.getParameterToInt("pageNum");
-        Integer pageSize = ServletUtils.getParameterToInt("pageSize");
-
-        PageHelper.startPage(pageNum,pageSize);
+        startPage();
         List<HjyCommunityDto> list=hjyCommunityService.queryList(hjyCommunity);
-        PageInfo<HjyCommunityDto> pageInfo=new PageInfo<>(list);
-
-        PageResult pageResult = new PageResult();
-        pageResult.setCode(HttpStatus.SUCCESS);
-        pageResult.setMsg("查询成功");
-        pageResult.setRows(list);
-        pageResult.setTotal(pageInfo.getTotal());
-
-        return pageResult;
-
+        return getData(list);
     }
 }
