@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
-@Mapper
+
 public interface HjyCommunityMapper extends BaseMapper<HjyCommunity> {
     @Select("<script>SELECT \n" +
             "    *,\n" +

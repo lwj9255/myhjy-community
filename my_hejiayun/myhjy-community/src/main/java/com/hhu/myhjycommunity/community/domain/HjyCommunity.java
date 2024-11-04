@@ -19,7 +19,7 @@ public class HjyCommunity extends BaseEntity {
     //小区编码
     private String communityCode;
     //省区划码
-    private String communityProvenceCode;
+    private String communityProvinceCode;
     //市区划码
     private String communityCityCode;
     //区县划码
@@ -61,12 +61,12 @@ public class HjyCommunity extends BaseEntity {
         this.communityCode = communityCode;
     }
 
-    public String getCommunityProvenceCode() {
-        return communityProvenceCode;
+    public String getCommunityProvinceCode() {
+        return communityProvinceCode;
     }
 
-    public void setCommunityProvenceCode(String communityProvenceCode) {
-        this.communityProvenceCode = communityProvenceCode;
+    public void setCommunityProvinceCode(String communityProvenceCode) {
+        this.communityProvinceCode = communityProvenceCode;
     }
 
     public String getCommunityCityCode() {

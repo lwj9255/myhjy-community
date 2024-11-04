@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhu.myhjycommunity.system.mapper.SysAreaMapper">
+
+
+    <select id="findAll" resultType="com.hhu.myhjycommunity.system.domain.SysArea">
+        SELECT code,name,parentId AS parentCode FROM sys_area;
+    </select>
+
+</mapper>
+

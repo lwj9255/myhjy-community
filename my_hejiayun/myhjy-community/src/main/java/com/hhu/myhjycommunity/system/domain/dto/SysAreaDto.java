@@ -4,15 +4,15 @@ import java.io.Serializable;
 import java.util.List;
 
 public class SysAreaDto implements Serializable {
-    private String code;
+    private Integer code;
     private String name;
     private List<SysAreaDto> children;
 
-    public String getCode() {
+    public Integer getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(Integer code) {
         this.code = code;
     }
 
