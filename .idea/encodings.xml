@@ -2,6 +2,8 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-starter-parent/2.7.8/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy_poi/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy_poi/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/my_hejiayun/easy-Code/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/my_hejiayun/myhjy-community/src/main/java" charset="UTF-8" />
   </component>

@@ -8,16 +8,19 @@
         <outputRelativeToContentRoot value="true" />
         <module name="easy-Code" />
         <module name="myhjy-community" />
+        <module name="easy_poi" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="easy-Code" target="1.8" />
+      <module name="easy_poi" target="1.8" />
       <module name="myhjy-community" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="easy-Code" options="-parameters" />
+      <module name="easy_poi" options="-parameters" />
       <module name="myhjy-community" options="-parameters" />
     </option>
   </component>
