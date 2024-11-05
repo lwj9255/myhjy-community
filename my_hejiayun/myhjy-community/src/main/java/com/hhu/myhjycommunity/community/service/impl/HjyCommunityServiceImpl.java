@@ -8,6 +8,7 @@ import com.hhu.myhjycommunity.system.service.SysAreaService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.List;
 @Service
 public class HjyCommunityServiceImpl implements HjyCommunityService {
@@ -26,6 +27,21 @@ public class HjyCommunityServiceImpl implements HjyCommunityService {
     public int insertCommunity(HjyCommunity hjyCommunity) {
         hjyCommunity.setCommunityCode(CODE_PREFIX+ System.currentTimeMillis());
         return hjyCommunityMapper.insert(hjyCommunity);
+    }
+
+    @Override
+    public HjyCommunity selectHjyCommunityById(Long communityId) {
+        return hjyCommunityMapper.selectById(communityId);
+    }
+
+    @Override
+    public int updateHjyCommunity(HjyCommunity hjyCommunity) {
+        return hjyCommunityMapper.updateById(hjyCommunity);
+    }
+
+    @Override
+    public int deleteHjyCommunityByIds(Long[] communityIds) {
+        return hjyCommunityMapper.deleteBatchIds(Arrays.asList(communityIds));
     }
 
 

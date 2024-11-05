@@ -19,4 +19,25 @@ public interface HjyCommunityService {
      * @return
      */
     int insertCommunity(HjyCommunity hjyCommunity);
+
+    /**
+     * 根据Id查询小区信息
+     * @param communityId
+     * @return
+     */
+    HjyCommunity selectHjyCommunityById(Long communityId);
+
+    /**
+     * 修改小区
+     * @param hjyCommunity
+     * @return
+     */
+    int updateHjyCommunity(HjyCommunity hjyCommunity);
+
+    /**
+     * 根据ID删除小区
+     * @param communityIds
+     * @return
+     */
+    int deleteHjyCommunityByIds(Long[] communityIds);
 }
