@@ -4,21 +4,17 @@ import cn.afterturn.easypoi.excel.ExcelExportUtil;
 import cn.afterturn.easypoi.excel.ExcelImportUtil;
 import cn.afterturn.easypoi.excel.entity.ExportParams;
 import cn.afterturn.easypoi.excel.entity.ImportParams;
-import com.hhu.easy_poi.pojo.Card;
-import com.hhu.easy_poi.pojo.Emp;
-import com.hhu.easy_poi.pojo.Order;
-import com.hhu.easy_poi.pojo.User;
+import cn.afterturn.easypoi.excel.entity.enmus.ExcelType;
+import com.hhu.easy_poi.pojo.*;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.annotation.Import;
 
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 class EasyPoiApplicationTests {
@@ -46,7 +42,7 @@ class EasyPoiApplicationTests {
         //1 配置对象
         Workbook workbook = ExcelExportUtil.exportExcel(new ExportParams("用户列表", "测试"), User.class, getUsers());
         //2 导出设置
-        FileOutputStream fileOutputStream = new FileOutputStream("D:\\Master\\Java\\user.xls");
+        FileOutputStream fileOutputStream = new FileOutputStream("D:\\Master\\Java\\myhjy-community\\excel\\user.xls");
         //3 导出
         workbook.write(fileOutputStream);
         //4 关闭
@@ -60,10 +56,110 @@ class EasyPoiApplicationTests {
         params.setTitleRows(1);
         params.setHeadRows(1);
         params.setNeedSave(true);
-        params.setSaveUrl("D:\\Master\\Java\\myhjy-community\\easy_poi\\src\\main\\resources\\static\\img");
+        params.setSaveUrl("D:\\Master\\Java\\myhjy-community\\easy_poi\\src\\test\\excel");
 
-        List<Emp> list = ExcelImportUtil.importExcel(new FileInputStream("D:\\Master\\Java\\emp.xls"), Emp.class, params);
+        List<Emp> list = ExcelImportUtil.importExcel(new FileInputStream("D:\\Master\\Java\\myhjy-community\\excel\\emp.xls"), Emp.class, params);
         list.forEach(System.out::println);
     }
 
+    /**
+      * 功能描述：根据接收的Excel文件来导入多个sheet,根据索引可返回一个集合
+      * @param filePath   导入文件路径
+      * @param sheetIndex  导入sheet索引
+      * @param titleRows  表标题的行数
+      * @param headerRows 表头行数
+      * @param pojoClass  Excel实体类
+      * @return
+      */
+    public static <T> List<T> importMultiSheet(String filePath,
+                                               int sheetIndex,
+                                               Integer titleRows,
+                                               Integer headerRows,
+                                               Class<T> pojoClass){
+        ImportParams params = new ImportParams();
+
+        params.setStartSheetIndex(sheetIndex);
+        params.setTitleRows(titleRows);
+        params.setHeadRows(headerRows);
+
+        //是否保存本次上传的excel
+        params.setNeedSave(false);
+        //表示表头必须包含的字段,不包含 就报错.
+        params.setImportFields(new String[]{"用户ID"});
+        List<T> list = null;
+
+        try {
+            list = ExcelImportUtil.importExcel(new FileInputStream(filePath),pojoClass,params);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    @Test
+    public void testImportMultiSheet(){
+        String excelPath = "D:\\Master\\Java\\myhjy-community\\excel\\login.xls";
+
+        List<LoginUser> loginUsers0 = importMultiSheet(excelPath, 0, 1, 1, LoginUser.class);
+        loginUsers0.forEach(System.out::println);
+
+        System.out.println("------------------------------------------------");
+
+        List<LoginUrl> loginUsers1 = importMultiSheet(excelPath, 1, 1, 1, LoginUrl.class);
+        loginUsers1.forEach(System.out::println);
+    }
+
+    public void exportMultiSheet(Object... objects){
+        ExportParams loginUserexportParams = new ExportParams();
+
+        loginUserexportParams.setSheetName("登录用户");
+        loginUserexportParams.setTitle("登录用户列表");
+
+        HashMap<String, Object> sheet1Map = new HashMap<>();
+        sheet1Map.put("title",loginUserexportParams);
+        sheet1Map.put("entity",LoginUser.class);
+        sheet1Map.put("data",objects[0]);
+
+        ExportParams loginUrlexportParams = new ExportParams();
+
+        loginUrlexportParams.setSheetName("Url");
+        loginUrlexportParams.setTitle("查询URL");
+
+        HashMap<String, Object> sheet2Map = new HashMap<>();
+        sheet2Map.put("title",loginUrlexportParams);
+        sheet2Map.put("entity",LoginUrl.class);
+        sheet2Map.put("data",objects[1]);
+
+        List<Map<String,Object>> sheetList = new ArrayList<>();
+        sheetList.add(sheet1Map);
+        sheetList.add(sheet2Map);
+
+        Workbook workbook = ExcelExportUtil.exportExcel(sheetList, ExcelType.HSSF);
+
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream("D:\\Master\\Java\\myhjy-community\\excel\\exportLogin.xls");
+            workbook.write(fileOutputStream);
+            fileOutputStream.close();
+            workbook.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testexportMultiSheet(){
+        ArrayList<LoginUser> sheet1 = new ArrayList<>();
+        sheet1.add(new LoginUser("1001", "向阳", "123456", new Date(), "0"));
+        sheet1.add(new LoginUser("1002", "文渊", "123456", new Date(), "1"));
+        sheet1.add(new LoginUser("1003", "小李", "123456", new Date(), "0"));
+
+        List<LoginUrl> sheet2 = new ArrayList<>();
+        sheet2.add(new LoginUrl("1001", "get", "http://127.0.0.1:8080"));
+        sheet2.add(new LoginUrl("1001", "post", "http://127.0.0.1:8080/logingout"));
+
+        exportMultiSheet(sheet1,sheet2);
+    }
+
 }
+
