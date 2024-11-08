@@ -8,8 +8,8 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="easy-Code" />
-        <module name="myhjy-community" />
         <module name="easy_poi" />
+        <module name="myhjy-community" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

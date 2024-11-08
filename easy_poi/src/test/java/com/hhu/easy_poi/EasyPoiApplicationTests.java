@@ -5,6 +5,7 @@ import cn.afterturn.easypoi.excel.ExcelImportUtil;
 import cn.afterturn.easypoi.excel.entity.ExportParams;
 import cn.afterturn.easypoi.excel.entity.ImportParams;
 import cn.afterturn.easypoi.excel.entity.enmus.ExcelType;
+import com.hhu.easy_poi.entity.Course;
 import com.hhu.easy_poi.pojo.*;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.jupiter.api.Test;
@@ -37,12 +38,26 @@ class EasyPoiApplicationTests {
         return users;
     }
 
+    public List<Course> getCourses(){
+        List<Course> courses = new ArrayList<>();
+        for(int i =0;i<10;i++){
+            Course course = new Course();
+            course.setCid("id"+i*5);
+            course.setCname("a"+i);
+            course.setOrderno("123456");
+            course.setBrief("test");
+            course.setPrice(i*100);
+            courses.add(course);
+        }
+        return courses;
+    }
+
     @Test
     public void testExport() throws Exception {
         //1 配置对象
-        Workbook workbook = ExcelExportUtil.exportExcel(new ExportParams("用户列表", "测试"), User.class, getUsers());
+        Workbook workbook = ExcelExportUtil.exportExcel(new ExportParams("course表格", "测试"), Course.class, getCourses());
         //2 导出设置
-        FileOutputStream fileOutputStream = new FileOutputStream("D:\\Master\\Java\\myhjy-community\\excel\\user.xls");
+        FileOutputStream fileOutputStream = new FileOutputStream("D:\\Master\\Java\\CODE\\myhjy-community\\excel\\course.xls");
         //3 导出
         workbook.write(fileOutputStream);
         //4 关闭
@@ -55,10 +70,9 @@ class EasyPoiApplicationTests {
         ImportParams params=new ImportParams();
         params.setTitleRows(1);
         params.setHeadRows(1);
-        params.setNeedSave(true);
-        params.setSaveUrl("D:\\Master\\Java\\myhjy-community\\easy_poi\\src\\test\\excel");
 
-        List<Emp> list = ExcelImportUtil.importExcel(new FileInputStream("D:\\Master\\Java\\myhjy-community\\excel\\emp.xls"), Emp.class, params);
+
+        List<Emp> list = ExcelImportUtil.importExcel(new FileInputStream("D:\\Master\\Java\\CODE\\myhjy-community\\excel\\emp.xls"), Emp.class, params);
         list.forEach(System.out::println);
     }
 
