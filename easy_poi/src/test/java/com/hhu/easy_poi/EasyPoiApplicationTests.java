@@ -64,7 +64,7 @@ class EasyPoiApplicationTests {
 
     /**
       * 功能描述：根据接收的Excel文件来导入多个sheet,根据索引可返回一个集合
-      * @param filePath   导入文件路径
+      * @param filePath  导入文件路径
       * @param sheetIndex  导入sheet索引
       * @param titleRows  表标题的行数
       * @param headerRows 表头行数
@@ -149,7 +149,7 @@ class EasyPoiApplicationTests {
 
     @Test
     public void testexportMultiSheet(){
-        ArrayList<LoginUser> sheet1 = new ArrayList<>();
+        List<LoginUser> sheet1 = new ArrayList<>();
         sheet1.add(new LoginUser("1001", "向阳", "123456", new Date(), "0"));
         sheet1.add(new LoginUser("1002", "文渊", "123456", new Date(), "1"));
         sheet1.add(new LoginUser("1003", "小李", "123456", new Date(), "0"));
