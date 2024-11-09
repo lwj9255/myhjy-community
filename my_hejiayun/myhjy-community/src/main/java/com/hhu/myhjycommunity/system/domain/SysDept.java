@@ -1,5 +1,6 @@
 package com.hhu.myhjycommunity.system.domain;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.hhu.myhjycommunity.common.core.domain.BaseEntity;
 
 import java.io.Serializable;
@@ -16,14 +17,8 @@ import java.util.List;
 public class SysDept extends BaseEntity {
     private static final long serialVersionUID = -61671692833187062L;
 
-    /**
-     * 添加一个父部门名称
-     */
-    private String parentName;
-    /**
-     * 添加一个子部门属性
-     */
-    private List<SysDept> children = new ArrayList<>();
+
+
     /**
      * 部门id
      */
@@ -32,6 +27,14 @@ public class SysDept extends BaseEntity {
      * 父部门id
      */
     private Long parentId;
+    /**
+     * 添加一个父部门名称
+     */
+    private String parentName;
+    /**
+     * 添加一个子部门属性
+     */
+    private List<SysDept> children = new ArrayList<>();
     /**
      * 祖级列表
      */

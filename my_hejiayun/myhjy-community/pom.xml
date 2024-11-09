@@ -247,6 +247,13 @@
             <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
 
+        <!--导入easypoi-->
+        <dependency>
+            <groupId>cn.afterturn</groupId>
+            <artifactId>easypoi-spring-boot-starter</artifactId>
+            <version>4.2.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>

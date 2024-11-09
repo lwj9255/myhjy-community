@@ -8,7 +8,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class MyhjyCommunityApplication {
 
     public static void main(String[] args) {
+
         SpringApplication.run(MyhjyCommunityApplication.class, args);
+        System.out.println("hejiayun启动成功");
     }
 
 }

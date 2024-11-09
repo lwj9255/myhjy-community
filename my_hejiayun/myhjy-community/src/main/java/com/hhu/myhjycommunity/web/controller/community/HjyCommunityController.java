@@ -68,4 +68,6 @@ public class HjyCommunityController extends BaseController {
     public BaseResponse remove(@PathVariable Long[] communityIds){
         return toAjax(hjyCommunityService.deleteHjyCommunityByIds(communityIds));
     }
+
+
 }
