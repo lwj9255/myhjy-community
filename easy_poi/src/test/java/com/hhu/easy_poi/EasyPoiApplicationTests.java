@@ -57,7 +57,7 @@ class EasyPoiApplicationTests {
         //1 配置对象
         Workbook workbook = ExcelExportUtil.exportExcel(new ExportParams("course表格", "测试"), Course.class, getCourses());
         //2 导出设置
-        FileOutputStream fileOutputStream = new FileOutputStream("D:\\Master\\Java\\CODE\\myhjy-community\\excel\\course.xls");
+        FileOutputStream fileOutputStream = new FileOutputStream("D:\\Master\\Java\\myhjy-community\\excel\\course.xls");
         //3 导出
         workbook.write(fileOutputStream);
         //4 关闭
