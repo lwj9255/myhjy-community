@@ -2,6 +2,7 @@ package com.hhu.myhjycommunity.community.service;
 
 import com.hhu.myhjycommunity.community.domain.HjyCommunity;
 import com.hhu.myhjycommunity.community.domain.dto.HjyCommunityDto;
+import com.hhu.myhjycommunity.community.domain.vo.HjyCommunityVo;
 
 import java.util.List;
 
@@ -40,4 +41,11 @@ public interface HjyCommunityService {
      * @return
      */
     int deleteHjyCommunityByIds(Long[] communityIds);
+
+    /**
+     * 获取小区下拉列表
+     * @param hjyCommunity
+     * @return
+     */
+    List<HjyCommunityVo> queryPullDown(HjyCommunity hjyCommunity);
 }
