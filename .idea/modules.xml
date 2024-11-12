@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/my_hejiayun/easy-Code/easy-Code.iml" filepath="$PROJECT_DIR$/my_hejiayun/easy-Code/easy-Code.iml" />
       <module fileurl="file://$PROJECT_DIR$/easy_poi/easy_poi.iml" filepath="$PROJECT_DIR$/easy_poi/easy_poi.iml" />
       <module fileurl="file://$PROJECT_DIR$/my_hejiayun/myhjy-community/myhjy-community.iml" filepath="$PROJECT_DIR$/my_hejiayun/myhjy-community/myhjy-community.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spring_security/spring_security.iml" filepath="$PROJECT_DIR$/spring_security/spring_security.iml" />
     </modules>
   </component>
 </project>
