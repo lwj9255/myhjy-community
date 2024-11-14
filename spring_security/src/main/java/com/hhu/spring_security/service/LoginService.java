@@ -5,4 +5,6 @@ import com.hhu.spring_security.entity.SysUser;
 
 public interface LoginService {
     ResponseResult login(SysUser sysUser);
+
+    ResponseResult logout();
 }
