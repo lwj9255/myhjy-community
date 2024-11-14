@@ -13,6 +13,8 @@ public class SpringSecurityApplication {
 
         ConfigurableApplicationContext run = SpringApplication.run(SpringSecurityApplication.class, args);
 
+        System.out.println("SpringSecurityApplication 启动成功");
+
 
     }
 
