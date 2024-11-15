@@ -1,15 +1,38 @@
 package com.hhu.spring_security.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class LoginUser implements UserDetails {
     private SysUser sysUser;
+    private List<String> permissions;
 
     public SysUser getSysUser() {
         return sysUser;
+    }
+
+    public LoginUser(SysUser sysUser, List<String> permissions) {
+        this.sysUser = sysUser;
+        this.permissions = permissions;
+    }
+
+    public List<String> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(List<String> permissions) {
+        this.permissions = permissions;
+    }
+
+    public void setAuthorities(List<SimpleGrantedAuthority> authorities) {
+        this.authorities = authorities;
     }
 
     public void setSysUser(SysUser sysUser) {
@@ -23,12 +46,20 @@ public class LoginUser implements UserDetails {
         this.sysUser = sysUser;
     }
 
+
+    @JSONField(serialize = false)
+    private List<SimpleGrantedAuthority> authorities;
     /**
      * 用于获取用户被授予的权限，可以用于实现访问控制。
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        if (authorities == null) {
+            authorities =
+                    permissions.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+            // SimpleGrantedAuthority::new 是方法引用的写法，相当于 permission -> new SimpleGrantedAuthority(permission)
+        }
+        return authorities;
     }
 
     /**
