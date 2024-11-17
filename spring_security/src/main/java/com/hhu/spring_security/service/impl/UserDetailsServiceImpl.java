@@ -3,6 +3,7 @@ package com.hhu.spring_security.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.hhu.spring_security.entity.LoginUser;
 import com.hhu.spring_security.entity.SysUser;
+import com.hhu.spring_security.mapper.MenuMapper;
 import com.hhu.spring_security.mapper.SysUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,10 +13,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
+    @Autowired
+    private MenuMapper menuMapper;
     @Autowired
     private SysUserMapper sysUserMapper;
 
@@ -32,9 +36,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         //根据用户查询权限信息，添加到LoginUser中
-        //这里权限暂时先写死，封装到list集合中
-        ArrayList<String> list = new ArrayList<>(Arrays.asList("test"));
+        List<String> perms = menuMapper.selectPermsByUserId(sysUser.getUserId());
 
-        return new LoginUser(sysUser,list);
+        return new LoginUser(sysUser,perms);
     }
 }

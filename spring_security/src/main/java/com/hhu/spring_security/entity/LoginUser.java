@@ -54,6 +54,7 @@ public class LoginUser implements UserDetails {
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        // //将permissions集合中的String类型权限信息,转换为SimpleGrantedAuthority类型
         if (authorities == null) {
             authorities =
                     permissions.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
