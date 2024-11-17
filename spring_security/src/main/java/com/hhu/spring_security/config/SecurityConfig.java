@@ -1,5 +1,7 @@
 package com.hhu.spring_security.config;
 
+import com.hhu.spring_security.exception.AccessDeniedHandlerImpl;
+import com.hhu.spring_security.exception.AuthenticationEntryPointImpl;
 import com.hhu.spring_security.filter.JwtAuthenticationTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +23,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
+
+    @Autowired
+    private AccessDeniedHandlerImpl accessDeniedHandler;
+
+    @Autowired
+    private AuthenticationEntryPointImpl authenticationEntryPoint;
+
 
     // 把BCryptPasswordEncoder注入到spring容器
     @Bean
@@ -61,5 +70,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
        //将自定义认证过滤器,添加到过滤器链中
        http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+
+       // 配置异常处理器
+       http.exceptionHandling()
+               .authenticationEntryPoint(authenticationEntryPoint) // 认证失败处理器 401
+               .accessDeniedHandler(accessDeniedHandler);// 授权异常处理器 403
     }
 }
