@@ -23,4 +23,11 @@ public class HelloController {
         System.out.println("hello role");
         return "hello role";
     }
+
+    @RequestMapping("/hellpMyEx")
+    @PreAuthorize("@my_ex.hasAuthority('system:user:list')")
+    public String helloMyEx(){
+        System.out.println("hello myex");
+        return "hello myex";
+    }
 }
