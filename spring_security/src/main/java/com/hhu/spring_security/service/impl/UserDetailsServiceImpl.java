@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.hhu.spring_security.entity.LoginUser;
 import com.hhu.spring_security.entity.SysUser;
 import com.hhu.spring_security.mapper.MenuMapper;
+import com.hhu.spring_security.mapper.RoleMapper;
 import com.hhu.spring_security.mapper.SysUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +23,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private MenuMapper menuMapper;
     @Autowired
     private SysUserMapper sysUserMapper;
+    @Autowired
+    private RoleMapper roleMapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -38,6 +41,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         //根据用户查询权限信息，添加到LoginUser中
         List<String> perms = menuMapper.selectPermsByUserId(sysUser.getUserId());
 
-        return new LoginUser(sysUser,perms);
+        //根据用户查询角色信息，添加到LoginUser中
+        List<String> roles = roleMapper.selectRolesByUserId(sysUser.getUserId());
+
+        return new LoginUser(sysUser,perms,roles);
     }
 }

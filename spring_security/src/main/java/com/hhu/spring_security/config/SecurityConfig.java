@@ -69,6 +69,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                .authorizeRequests()
                // 对于登录接口，允许匿名访问
                .antMatchers(("/sysUser/login")).anonymous()
+                //配置形式的权限控制
+                .antMatchers("/hellomenu").hasAuthority("system:menu:list")
                // 除了上面的接口，其他全都要鉴权认证
                .anyRequest().authenticated();
 
