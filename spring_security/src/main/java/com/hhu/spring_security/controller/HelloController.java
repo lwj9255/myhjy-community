@@ -39,11 +39,19 @@ public class HelloController {
         return "hello myex";
     }
 
-    @RequestMapping("/level1")
-    @PreAuthorize("hasAnyAuthority('system:user:list','system:role:list') AND hasRole('common')")
-    public String hellolevel1(){
-        System.out.println("hello level1");
-        return "hello level1";
+
+    //当前用户是common角色,并且具有system:role:list或者system:user:list
+    @PreAuthorize("hasRole('common') AND hasAnyAuthority('system:role:list','system:user:list')")
+    public String level1(){
+        System.out.println("hello level111");
+        return "level1 page";
     }
 
+    @RequestMapping("/level2")
+    //当前用户是common角色,并且具有system:role:list或者system:user:list
+    @PreAuthorize("hasAnyRole('common','admin') OR hasAuthority('system:role:list')")
+    public String level2(){
+        System.out.println("hello level222");
+        return "level2 page";
+    }
 }
