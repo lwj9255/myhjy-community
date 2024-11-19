@@ -28,7 +28,7 @@ public class HelloController {
 //    @PreAuthorize("hasAnyAuthority('system:menu:list')") //Spring Security 提供的一个注解，用于在方法执行前进行权限校验
     // 检查当前登录用户是否具有指定的权限(这里是‘system:role:list')，如果有，则允许执行该方法，否则抛出 `AccessDeniedException` 异常，阻止方法执行。
     public String helloMenu(){
-        System.out.println("hello role");
+        System.out.println("hello menu");
         return "hello role";
     }
 
@@ -39,13 +39,14 @@ public class HelloController {
         return "hello myex";
     }
 
-
+    @RequestMapping("/level1")
     //当前用户是common角色,并且具有system:role:list或者system:user:list
     @PreAuthorize("hasRole('common') AND hasAnyAuthority('system:role:list','system:user:list')")
     public String level1(){
         System.out.println("hello level111");
         return "level1 page";
     }
+
 
     @RequestMapping("/level2")
     //当前用户是common角色,并且具有system:role:list或者system:user:list

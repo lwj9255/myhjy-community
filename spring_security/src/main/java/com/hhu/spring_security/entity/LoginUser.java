@@ -37,7 +37,7 @@ public class LoginUser implements UserDetails {
         this.permissions = permissions;
     }
 
-    public LoginUser(SysUser sysUser, List<String> perms, List<String> roles) {
+    public LoginUser(SysUser sysUser, List<String> permissions, List<String> roles) {
         this.sysUser = sysUser;
         this.permissions = permissions;
         this.roles = roles;
@@ -53,8 +53,8 @@ public class LoginUser implements UserDetails {
             authorities =
                     permissions.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
             // SimpleGrantedAuthority::new 是方法引用的写法，相当于 permission -> new SimpleGrantedAuthority(permission)
-            authorities =
-                    roles.stream().map(role->new SimpleGrantedAuthority("ROLE_"+role)).collect(Collectors.toList());
+            authorities.addAll(
+                    roles.stream().map(role->new SimpleGrantedAuthority("ROLE_"+role)).collect(Collectors.toList()));
         }
         return authorities;
     }
