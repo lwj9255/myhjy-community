@@ -49,7 +49,7 @@ public class HelloController {
 
 
     @RequestMapping("/level2")
-    //当前用户是common角色,并且具有system:role:list或者system:user:list
+    //当前用户是common角色,或者具有system:role:list
     @PreAuthorize("hasAnyRole('common','admin') OR hasAuthority('system:role:list')")
     public String level2(){
         System.out.println("hello level222");

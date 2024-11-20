@@ -10,6 +10,7 @@
         <module name="easy-Code" />
         <module name="easy_poi" />
         <module name="spring_security" />
+        <module name="spring_security2" />
         <module name="myhjy-community" />
       </profile>
     </annotationProcessing>
@@ -18,6 +19,7 @@
       <module name="easy_poi" target="1.8" />
       <module name="myhjy-community" target="1.8" />
       <module name="spring_security" target="1.8" />
+      <module name="spring_security2" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
@@ -26,6 +28,7 @@
       <module name="easy_poi" options="-parameters" />
       <module name="myhjy-community" options="-parameters" />
       <module name="spring_security" options="-parameters" />
+      <module name="spring_security2" options="-parameters" />
     </option>
   </component>
 </project>
