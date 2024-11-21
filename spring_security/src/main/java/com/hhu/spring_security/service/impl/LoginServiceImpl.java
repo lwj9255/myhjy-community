@@ -1,9 +1,11 @@
 package com.hhu.spring_security.service.impl;
 
 import com.baomidou.mybatisplus.extension.api.R;
+import com.hhu.spring_security.common.Constants;
 import com.hhu.spring_security.common.ResponseResult;
 import com.hhu.spring_security.entity.LoginUser;
 import com.hhu.spring_security.entity.SysUser;
+import com.hhu.spring_security.exception.CaptchaNotMatchException;
 import com.hhu.spring_security.service.LoginService;
 import com.hhu.spring_security.utils.JwtUtil;
 import com.hhu.spring_security.utils.RedisCache;
@@ -48,7 +50,7 @@ public class LoginServiceImpl implements LoginService {
         // 然后DaoAuthenticationProvider 会调用 UserDetailsService
         // 自定义一个实现类UserDetailsServiceImpl来实现UserDetailsService
         // 重写其中的loadUserByUsername方法,在方法中编写认证的条件
-        //
+        // 会去调用UserDetailsServiceImpl.loadUserByUsername
         // 在条件中写了是从sys_user这个表中根据名词取出项，如果取出的是空则登录失败
         Authentication usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(sysUser.getUserName(),sysUser.getPassword());
@@ -95,5 +97,46 @@ public class LoginServiceImpl implements LoginService {
 
 
         return new ResponseResult(200,"注销成功");
+    }
+
+    /**
+     * 带验证码登录
+     * @param userName
+     * @param password
+     * @param code
+     * @param uuid
+     * @return
+     */
+    @Override
+    public String login(String userName, String password, String code, String uuid) {
+        // 从Redis中获取验证码
+        String verifykey = Constants.CAPTCHA_CODE_KEY + uuid;
+        String captcha = redisCache.getCacheObject(verifykey);
+        redisCache.deleteObject(verifykey);
+
+        if(captcha == null || !code.equalsIgnoreCase(captcha)){
+            throw new CaptchaNotMatchException("验证码错误！");
+        }
+
+        Authentication usernamePasswordAuthenticationToken =
+                new UsernamePasswordAuthenticationToken(userName,password);
+
+        Authentication authentication =
+                authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+        //2.如果认证没有通过,给出错误提示
+        if(Objects.isNull(authentication)){
+            throw new RuntimeException("登陆失败");
+        }
+
+        //3.如果认证通过,使用userId生成一个JWT,并将其保存到 ResponseResult对象中返回
+        //3.1 获取经过身份验证的用户的主题信息
+        LoginUser loginUser = (LoginUser) authentication.getPrincipal();
+        //3.2 获取userID 生成JWT
+        String userId = loginUser.getSysUser().getUserId().toString();
+        String jwt = JwtUtil.createJWT(userId);
+        //4.将用户信息存储在Redis中，在下一次请求时能够识别出用户,userid作为key
+        redisCache.setCacheObject("login:"+userId,loginUser);
+
+        return jwt;
     }
 }

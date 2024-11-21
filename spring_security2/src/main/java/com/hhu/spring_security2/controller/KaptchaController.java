@@ -35,16 +35,16 @@ public class KaptchaController {
     @GetMapping("/code/image")
     public void getCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
         // 1.创建验证码文本
-        String producerText = producer.createText();
+        String text = producer.createText();
         // 2.将验证码文本放入session（前后端不分离的情况下一般是放入session中）
-        CheckCode checkCode = new CheckCode(producerText);
+        CheckCode checkCode = new CheckCode(text);
         request.getSession().setAttribute(Constants.KAPTCHA_SESSION_KEY,checkCode);
         //3.将验证码图片返回，禁止验证码图片缓存
         response.setHeader("Cache-Control","no-store");
         response.setHeader("Pragma", "no-cache");
         response.setDateHeader("Expires", 0);
         //4.创建验证码图片，设置contentType
-        BufferedImage bufferedImage = producer.createImage(producerText);
+        BufferedImage bufferedImage = producer.createImage(text);
         response.setContentType("image/png");
         ImageIO.write(bufferedImage,"jpg",response.getOutputStream());
     }

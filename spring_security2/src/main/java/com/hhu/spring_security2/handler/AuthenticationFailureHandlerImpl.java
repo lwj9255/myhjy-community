@@ -21,6 +21,7 @@ public class AuthenticationFailureHandlerImpl implements AuthenticationFailureHa
                                         HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {
         Map<String, Object> result = new HashMap<String, Object>();
+        result.put("错误信息", exception.getMessage());
         result.put("msg","登陆失败");
         result.put("status",500);
         response.setContentType("application/json;charset=UTF-8");
