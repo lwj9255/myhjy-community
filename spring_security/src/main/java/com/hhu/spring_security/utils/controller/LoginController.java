@@ -1,4 +1,4 @@
-package com.hhu.spring_security.controller;
+package com.hhu.spring_security.utils.controller;
 
 import com.hhu.spring_security.common.ResponseResult;
 import com.hhu.spring_security.entity.LoginBody;

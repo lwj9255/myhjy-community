@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * spring redis 工具类
  */
-@SuppressWarnings(value = { "unchecked", "rawtypes" })
+@SuppressWarnings(value = { "unchecked", "rawtypes" }) // @SuppressWarnings用来抑制编译器产生的警告信息，value 表示需要忽略的警告类型
 @Component
 public class RedisCache
 {

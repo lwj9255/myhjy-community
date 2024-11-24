@@ -11,8 +11,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /**
- * @author spikeCong
- * @date 2023/4/10
+ * redis配置类
  **/
 @Configuration
 public class RedisConfig {

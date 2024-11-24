@@ -36,4 +36,13 @@ public class MapperTest {
         // 对比原始密码和加密后的密码
         System.out.println(passwordEncoder.matches("123456","$2a$10$P/HT/R/JnE.NYVBJ5YEvoeRd.LaTpEWtHhn6erTP1O8c1MbiNX.56"));
     }
+
+    @Test
+    public void testBcryp2(){
+        // 对原始密码进行加密
+        String e1 = passwordEncoder.encode("admin123");
+        System.out.println(e1);// $2a$10$49YTPwiCdAYU2nP3Yuv1e.TyIQ1/J15jzMJ65rRQJiMGiML24GP.2
+
+        System.out.println(passwordEncoder.matches("admin123","$2a$10$49YTPwiCdAYU2nP3Yuv1e.TyIQ1/J15jzMJ65rRQJiMGiML24GP.2"));
+    }
 }

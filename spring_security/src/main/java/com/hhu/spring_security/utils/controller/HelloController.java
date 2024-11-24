@@ -1,4 +1,4 @@
-package com.hhu.spring_security.controller;
+package com.hhu.spring_security.utils.controller;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
