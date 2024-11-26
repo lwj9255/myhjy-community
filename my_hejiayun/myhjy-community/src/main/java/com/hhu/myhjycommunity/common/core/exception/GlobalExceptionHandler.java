@@ -16,4 +16,14 @@ public class GlobalExceptionHandler {
     public BaseResponse baseExceptionHandler(BaseException e){
         return BaseResponse.fail(e.getDefaultMessage());
     }
+
+    /**
+     * 业务异常处理
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(CustomException.class)
+    public BaseResponse businessException(CustomException e){
+        return BaseResponse.fail(e.getCode()+"",e.getMsg(),e.isSuccess());
+    }
 }

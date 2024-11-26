@@ -2,15 +2,15 @@ package com.hhu.myhjycommunity.system.service.Impl;
 
 import com.hhu.myhjycommunity.common.constant.Constants;
 import com.hhu.myhjycommunity.common.core.exception.BaseException;
+import com.hhu.myhjycommunity.common.core.exception.UserPasswordNotMatchException;
 import com.hhu.myhjycommunity.common.utils.RedisCache;
-import com.hhu.myhjycommunity.framework.security.CaptchaNotMatchException;
+import com.hhu.myhjycommunity.common.core.exception.CaptchaNotMatchException;
 import com.hhu.myhjycommunity.system.domain.LoginUser;
 import com.hhu.myhjycommunity.system.service.SysLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -35,7 +35,7 @@ public class SysLoginServiceImpl implements SysLoginService {
         redisCache.deleteObject(verfiykey);
 
         if(captcha == null || !code.equalsIgnoreCase(captcha)){ // equalsIgnoreCase忽略大小写考虑的比较字符
-            throw new CaptchaNotMatchException("验证码错误！");
+            throw new CaptchaNotMatchException();
         }
 
         //2.用户认证
@@ -44,7 +44,7 @@ public class SysLoginServiceImpl implements SysLoginService {
             authenticate =
                     authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         } catch (Exception e) {
-           throw new BaseException("用户不存在或密码错误!");
+           throw new UserPasswordNotMatchException();
         }
 
         //3.获取通过身份验证的用户的主体信息
