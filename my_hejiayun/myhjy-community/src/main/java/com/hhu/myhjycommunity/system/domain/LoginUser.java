@@ -7,10 +7,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 public class LoginUser implements UserDetails {
+    // 用户信息
     private SysUser sysUser;
 
     // 用户唯一标识
     private String token;
+
+    // 登录时间
+    private Long loginTime;
+
+    // 过期时间
+    private Long expireTime;
 
     public LoginUser() {
     }
@@ -34,6 +41,22 @@ public class LoginUser implements UserDetails {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public Long getLoginTime() {
+        return loginTime;
+    }
+
+    public void setLoginTime(Long loginTime) {
+        this.loginTime = loginTime;
+    }
+
+    public Long getExpireTime() {
+        return expireTime;
+    }
+
+    public void setExpireTime(Long expireTime) {
+        this.expireTime = expireTime;
     }
 
     /**

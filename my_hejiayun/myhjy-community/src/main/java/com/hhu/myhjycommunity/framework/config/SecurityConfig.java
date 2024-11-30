@@ -1,5 +1,6 @@
 package com.hhu.myhjycommunity.framework.config;
 
+import com.hhu.myhjycommunity.framework.security.filter.JwtAuthenticationTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,12 +13,20 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.web.filter.CorsFilter;
 
 @EnableGlobalMethodSecurity(prePostEnabled = true,securedEnabled = true) // Spring Security 提供的一个注解，用于启用全局方法级别的安全控制
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private AuthenticationEntryPoint unathorizedHandler;
+
+    @Autowired
+    private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
+
+    @Autowired
+    private CorsFilter corsFilter;
 
     // 把BCryptPasswordEncoder注入到spring容器
     @Bean
@@ -74,5 +83,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         // 配置认证失败处理器
         http.exceptionHandling().authenticationEntryPoint(unathorizedHandler);
+
+        // 添加JWTFilter
+        http.addFilterBefore(jwtAuthenticationTokenFilter,UsernamePasswordAuthenticationFilter.class);
+
+        // 添加CORS Filter
+        http.addFilterBefore(corsFilter,JwtAuthenticationTokenFilter.class);
+        //确保在用户注销登录时，响应头中包含必要的跨域资源共享（CORS）字段
+        http.addFilterBefore(corsFilter, LogoutFilter.class);
     }
 }
