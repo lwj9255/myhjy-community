@@ -164,5 +164,23 @@ public class SysDept extends BaseEntity {
     public void setChildren(List<SysDept> children) {
         this.children = children;
     }
+
+    @Override
+    public String toString() {
+        return "SysDept{" +
+                "deptId=" + deptId +
+                ", parentId=" + parentId +
+                ", parentName='" + parentName + '\'' +
+                ", children=" + children +
+                ", ancestors='" + ancestors + '\'' +
+                ", deptName='" + deptName + '\'' +
+                ", orderNum=" + orderNum +
+                ", leader='" + leader + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", status='" + status + '\'' +
+                ", delFlag='" + delFlag + '\'' +
+                '}';
+    }
 }
 

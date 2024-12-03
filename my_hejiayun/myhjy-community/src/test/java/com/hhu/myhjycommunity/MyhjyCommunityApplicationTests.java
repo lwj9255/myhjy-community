@@ -1,5 +1,6 @@
 package com.hhu.myhjycommunity;
 
+import com.hhu.myhjycommunity.system.domain.SysUser;
 import com.hhu.myhjycommunity.system.mapper.SysUserMapper;
 import com.hhu.myhjycommunity.system.service.SysMenuService;
 import com.hhu.myhjycommunity.system.service.SysRoleService;
@@ -22,7 +23,8 @@ class MyhjyCommunityApplicationTests {
 
     @Test
     public void tsetSysUserMapper() {
-        System.out.println(sysUserMapper.selectUserByUserName("admin"));
+        SysUser sysUser = sysUserMapper.selectUserByUserName("admin");
+        System.out.println(sysUser);
     }
 
     @Test
