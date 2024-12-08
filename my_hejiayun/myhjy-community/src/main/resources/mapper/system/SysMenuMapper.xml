@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.hhu.myhjycommunity.system.mapper.SysMenuMapper">
+
+    <resultMap type="com.hhu.myhjycommunity.system.domain.SysMenu" id="SysMenuMap">
+        <result property="menuId" column="menu_id" jdbcType="INTEGER"/>
+        <result property="menuName" column="menu_name" jdbcType="VARCHAR"/>
+        <result property="parentId" column="parent_id" jdbcType="INTEGER"/>
+        <result property="orderNum" column="order_num" jdbcType="INTEGER"/>
+        <result property="path" column="path" jdbcType="VARCHAR"/>
+        <result property="component" column="component" jdbcType="VARCHAR"/>
+        <result property="isFrame" column="is_frame" jdbcType="INTEGER"/>
+        <result property="isCache" column="is_cache" jdbcType="INTEGER"/>
+        <result property="menuType" column="menu_type" jdbcType="VARCHAR"/>
+        <result property="visible" column="visible" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="VARCHAR"/>
+        <result property="perms" column="perms" jdbcType="VARCHAR"/>
+        <result property="icon" column="icon" jdbcType="VARCHAR"/>
+        <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
     <select id="selectMenuPermsByUserId" resultType="java.lang.String">
         SELECT
             DISTINCT sm.`perms`
@@ -10,4 +32,30 @@
                  LEFT JOIN sys_role sr ON sr.role_id = sur.role_id
         WHERE sm.status = '0' AND sr.status = '0' AND sur.user_id = #{userId}
     </select>
+
+    <select id="selectMenuTreeAll" resultMap="SysMenuMap">
+        SELECT
+            DISTINCT sm.`menu_id`,sm.`parent_id`,sm.`menu_name`,
+                     sm.`order_num`,sm.`path`,sm.`component`,sm.`is_frame`,sm.`is_cache`,
+                     sm.`menu_type`,sm.`visible`,sm.`status`,IFNULL(sm.`perms`,'') AS perms,sm.`icon`,sm.`create_time`
+        FROM sys_menu sm
+        WHERE sm.`menu_type` IN ('M','C') AND sm.`status`=0
+        ORDER BY sm.`parent_id`,sm.`order_num`
+    </select>
+
+    <select id="selectMenuTreeByUserId" resultMap="SysMenuMap">
+        SELECT
+            DISTINCT sm.`menu_id`,sm.`parent_id`,sm.`menu_name`,
+                     sm.`order_num`,sm.`path`,sm.`component`,sm.`is_frame`,sm.`is_cache`,
+                     sm.`menu_type`,sm.`visible`,sm.`status`,IFNULL(sm.`perms`,'') AS perms,sm.`icon`,sm.`create_time`
+        FROM sys_menu sm
+                 LEFT JOIN sys_role_menu srm ON sm.`menu_id`=srm.`menu_id`
+                 LEFT JOIN sys_role sr ON srm.`role_id` = sr.`role_id`
+                 LEFT JOIN sys_user_role sur ON sr.`role_id` = sur.`role_id`
+                 LEFT JOIN sys_user su ON sur.`user_id` = su.`user_id`
+        WHERE su.`user_id` = #{userId} AND sm.`menu_type` IN ('M','C') AND sm.`status`=0 AND sr.`status` = 0
+        ORDER BY sm.`parent_id`,sm.`order_num`
+    </select>
+
+
 </mapper>
