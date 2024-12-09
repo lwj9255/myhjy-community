@@ -1,16 +1,17 @@
 package com.hhu.myhjycommunity.system.service.Impl;
 
 import com.github.pagehelper.util.StringUtil;
+import com.hhu.myhjycommunity.common.constant.UserConstants;
 import com.hhu.myhjycommunity.system.domain.SysMenu;
+import com.hhu.myhjycommunity.system.domain.vo.MetaVo;
+import com.hhu.myhjycommunity.system.domain.vo.RouterVo;
 import com.hhu.myhjycommunity.system.mapper.SysMenuMapper;
 import com.hhu.myhjycommunity.system.service.SysMenuService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,6 +43,67 @@ public class SysMenuServiceImpl implements SysMenuService {
         }
 
         return getChildPerms(menus,0);
+    }
+
+    @Override
+    public List<RouterVo> buildMenus(List<SysMenu> menus) {
+        List<RouterVo> routers = new LinkedList<>();
+        for(SysMenu menu : menus){
+            RouterVo routerVo = new RouterVo();
+            routerVo.setName(getRouterName(menu));
+            routerVo.setPath(getRouterPath(menu));
+            routerVo.setComponent(getComponent(menu));
+            routerVo.setHidden("1".equals(menu.getVisible()));
+            routerVo.setMeta(new MetaVo(menu.getMenuName(),menu.getIcon(),"1".equals(menu.getIsCache())));
+            List<SysMenu> subMenus = menu.getChildren();
+            if(!subMenus.isEmpty() && subMenus.size()>0 && UserConstants.TYPE_DIR.equals(menu.getMenuType())){
+                routerVo.setAlwaysShow(true);
+                routerVo.setRedirect("noRedirect");
+                routerVo.setChildren(buildMenus(subMenus));
+            }
+            routers.add(routerVo);
+        }
+        return routers;
+    }
+
+    /**
+     *获取组件信息
+     */
+    private String getComponent(SysMenu menu) {
+        // 如果组件没信息，则用LAYOUT
+        String component = UserConstants.LAYOUT;
+        // 如果组件有信息，则用信息
+        if(!StringUtils.isEmpty(menu.getComponent())){
+            component = menu.getComponent();
+        // 如果不是一级目录，则用PARENT_VIEW
+        }else if(menu.getParentId().intValue() != 0 && UserConstants.TYPE_DIR.equals(menu.getMenuType())){
+            component = UserConstants.PARENT_VIEW;
+        }
+        return component;
+    }
+
+    /**
+     *获取路由地址
+     */
+    private String getRouterPath(SysMenu menu) {
+        String routerPath = menu.getPath();
+
+        // 如果是一级目录，则加在路由地址前加一个斜杠
+        if(0 == menu.getParentId().intValue()
+                && UserConstants.TYPE_DIR.equals(menu.getMenuType())
+                && UserConstants.NO_FRAME.equals(menu.getIsFrame())){
+            routerPath = "/" + menu.getPath();
+        }
+
+        return routerPath;
+    }
+
+    /**
+     * 获取路由名称
+     */
+    private String getRouterName(SysMenu menu) {
+        String routerName = StringUtils.capitalize(menu.getPath());
+        return routerName;
     }
 
     /**

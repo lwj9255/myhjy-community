@@ -30,6 +30,7 @@ public class BaseResponse<T> implements Serializable {
         response.setCode(ResultCode.SUCCESS.getCode());
         response.setMsg(ResultCode.SUCCESS.getMessage());
         response.setData(data);
+        response.setSuccess(true);
         return response;
     }
     /**

@@ -8,6 +8,7 @@ import com.hhu.myhjycommunity.system.domain.LoginUser;
 import com.hhu.myhjycommunity.system.domain.SysMenu;
 import com.hhu.myhjycommunity.system.domain.SysUser;
 import com.hhu.myhjycommunity.system.domain.vo.LoginBody;
+import com.hhu.myhjycommunity.system.domain.vo.RouterVo;
 import com.hhu.myhjycommunity.system.mapper.SysMenuMapper;
 import com.hhu.myhjycommunity.system.service.SysLoginService;
 import com.hhu.myhjycommunity.system.service.SysMenuService;
@@ -60,7 +61,8 @@ public class SysLoginController {
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
         SysUser sysUser = loginUser.getSysUser();
         List<SysMenu> menus = sysMenuService.selectMenuTreeByUserId(sysUser.getUserId());
-        return BaseResponse.success(menus);
+        List<RouterVo> routerVoList = sysMenuService.buildMenus(menus);
+        return BaseResponse.success(routerVoList);
     }
 
 
