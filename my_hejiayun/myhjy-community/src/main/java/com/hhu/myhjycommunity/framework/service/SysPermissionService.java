@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Component
-public class SyspermissionService {
+public class SysPermissionService {
     @Autowired
     private SysRoleService sysroleService;
 

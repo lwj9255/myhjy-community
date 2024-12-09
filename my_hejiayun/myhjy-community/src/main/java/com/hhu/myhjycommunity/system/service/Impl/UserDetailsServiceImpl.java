@@ -1,6 +1,7 @@
 package com.hhu.myhjycommunity.system.service.Impl;
 
 import com.hhu.myhjycommunity.common.enums.UserStatus;
+import com.hhu.myhjycommunity.framework.service.SysPermissionService;
 import com.hhu.myhjycommunity.system.domain.LoginUser;
 import com.hhu.myhjycommunity.system.domain.SysUser;
 import com.hhu.myhjycommunity.system.service.SysUserService;
@@ -18,6 +19,9 @@ import java.util.Objects;
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private SysUserService sysUserService;
+    @Autowired
+    private SysPermissionService permissionService;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         SysUser sysUser = sysUserService.selectUserByUserName(username);
@@ -35,6 +39,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("登录用户：" + username + "已停用");
         }
 
-        return new LoginUser(sysUser);
+        return createLoginUser(sysUser);
+    }
+
+    public UserDetails createLoginUser(SysUser sysUser){
+        return new LoginUser(sysUser,permissionService.getMenuPermission(sysUser));
     }
 }

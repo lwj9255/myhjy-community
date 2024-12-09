@@ -13,6 +13,7 @@ import com.hhu.myhjycommunity.community.domain.vo.HjyCommunityVo;
 import com.hhu.myhjycommunity.community.service.HjyCommunityService;
 import com.hhu.myhjycommunity.community.service.impl.HjyCommunityServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -31,6 +32,7 @@ public class HjyCommunityController extends BaseController {
      * @return
      */
     @GetMapping("/list")
+    @PreAuthorize("@mype.hasPerms('system:community:list')")
     public PageResult list(HjyCommunity hjyCommunity){
         startPage();
         List<HjyCommunityDto> list=hjyCommunityService.queryList(hjyCommunity);

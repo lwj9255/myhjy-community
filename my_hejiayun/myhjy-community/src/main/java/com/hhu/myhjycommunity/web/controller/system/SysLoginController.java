@@ -3,7 +3,7 @@ package com.hhu.myhjycommunity.web.controller.system;
 import com.hhu.myhjycommunity.common.core.domain.BaseResponse;
 import com.hhu.myhjycommunity.common.utils.ChainedMap;
 import com.hhu.myhjycommunity.common.utils.ServletUtils;
-import com.hhu.myhjycommunity.framework.service.SyspermissionService;
+import com.hhu.myhjycommunity.framework.service.SysPermissionService;
 import com.hhu.myhjycommunity.system.domain.LoginUser;
 import com.hhu.myhjycommunity.system.domain.SysMenu;
 import com.hhu.myhjycommunity.system.domain.SysUser;
@@ -25,7 +25,7 @@ public class SysLoginController {
     @Autowired
     private SysLoginService sysLoginService;
     @Autowired
-    private SyspermissionService syspermissionService;
+    private SysPermissionService syspermissionService;
     @Autowired
     private TokenService tokenService;
     @Autowired
