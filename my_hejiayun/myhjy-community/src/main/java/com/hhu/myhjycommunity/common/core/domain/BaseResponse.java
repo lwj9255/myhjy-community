@@ -6,7 +6,7 @@ public class BaseResponse<T> implements Serializable {
     /**
      * 响应状态码
      */
-    private String code;
+    private int code;
     /**
      * 响应结果描述
      */
@@ -27,7 +27,7 @@ public class BaseResponse<T> implements Serializable {
      */
     public static <E> BaseResponse<E> success(E data){
         BaseResponse<E> response = new BaseResponse<>();
-        response.setCode(ResultCode.SUCCESS.getCode());
+        response.setCode(Integer.parseInt(ResultCode.SUCCESS.getCode()));
         response.setMsg(ResultCode.SUCCESS.getMessage());
         response.setData(data);
         response.setSuccess(true);
@@ -41,7 +41,7 @@ public class BaseResponse<T> implements Serializable {
     public static <E> BaseResponse<E> fail(String message){
 
         BaseResponse<E> response = new BaseResponse<>();
-        response.setCode(ResultCode.ERROR.getCode());
+        response.setCode(Integer.parseInt(ResultCode.ERROR.getCode()));
         response.setMsg(message);
 
         return response;
@@ -55,7 +55,7 @@ public class BaseResponse<T> implements Serializable {
     public static <E> BaseResponse<E> fail(String code, String message){
 
         BaseResponse<E> response = new BaseResponse<>();
-        response.setCode(code);
+        response.setCode(Integer.parseInt(code));
         response.setMsg(message);
 
         return response;
@@ -66,17 +66,17 @@ public class BaseResponse<T> implements Serializable {
      */
     public static <E> BaseResponse<E> fail(String code, String msg,boolean success){
         BaseResponse<E> response = new BaseResponse<>();
-        response.setCode(code);
+        response.setCode(Integer.parseInt(code));
         response.setMsg(msg);
         response.setSuccess(success);
         return response;
     }
 
-    public String getCode() {
+    public int getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(int code) {
         this.code = code;
     }
 
