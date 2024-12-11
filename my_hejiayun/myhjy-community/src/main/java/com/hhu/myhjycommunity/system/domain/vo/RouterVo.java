@@ -1,5 +1,6 @@
 package com.hhu.myhjycommunity.system.domain.vo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,7 +45,7 @@ public class RouterVo {
     /**
      * 子路由
      */
-    private List<RouterVo> children;
+    private List<RouterVo> children = new ArrayList<>();
 
     public String getName() {
         return name;

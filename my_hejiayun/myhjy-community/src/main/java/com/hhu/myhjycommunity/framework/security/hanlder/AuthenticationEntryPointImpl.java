@@ -1,4 +1,4 @@
-package com.hhu.myhjycommunity.framework.security;
+package com.hhu.myhjycommunity.framework.security.hanlder;
 
 import com.alibaba.fastjson.JSON;
 import com.hhu.myhjycommunity.common.constant.HttpStatus;
