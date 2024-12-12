@@ -1,13 +1,13 @@
 package com.hhu.myhjycommunity.web.controller.system;
 
 import com.hhu.myhjycommunity.common.controller.BaseController;
+import com.hhu.myhjycommunity.common.core.domain.BaseResponse;
 import com.hhu.myhjycommunity.common.core.page.PageResult;
+import com.hhu.myhjycommunity.common.utils.SecurityUtils;
 import com.hhu.myhjycommunity.system.domain.SysDictData;
 import com.hhu.myhjycommunity.system.service.SysDictDataService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,5 +27,50 @@ public class SysDictDataController extends BaseController {
         startPage();
         List<SysDictData> list = sysDictDataService.selectDictDataList(sysDictData);
         return getData(list);
+    }
+
+    /**
+     * 根据id查询字典详细信息
+     */
+    @GetMapping(value = "/{dictCode}")
+    public BaseResponse getInfo(@PathVariable Long dictCode){
+
+        return BaseResponse.success(sysDictDataService.selectDictDataById(dictCode));
+    }
+
+
+    /**
+     * 根据字典类型查询字典数据信息
+     */
+    @GetMapping(value = "/type/{dictType}")
+    public BaseResponse getDictByType(@PathVariable String dictType){
+        return BaseResponse.success(sysDictDataService.selectDictDataByType(dictType));
+    }
+
+    /**
+     * 新增字典类型
+     */
+    @PostMapping
+    public BaseResponse add(@RequestBody SysDictData dictData){
+        dictData.setCreateBy(SecurityUtils.getUserName());
+        return toAjax(sysDictDataService.insertDictData(dictData));
+    }
+
+    /**
+     * 修改字典类型
+     */
+    @PutMapping
+    public BaseResponse edit(@RequestBody SysDictData dictData){
+        dictData.setUpdateBy(SecurityUtils.getUserName());
+        return toAjax(sysDictDataService.updateDictData(dictData));
+    }
+
+    /**
+     * 删除字典类型
+     */
+    @DeleteMapping("/{dictCodes}")
+    public BaseResponse remove(@PathVariable Long[] dictCodes)
+    {
+        return toAjax(sysDictDataService.deleteDictDataByIds(dictCodes));
     }
 }
