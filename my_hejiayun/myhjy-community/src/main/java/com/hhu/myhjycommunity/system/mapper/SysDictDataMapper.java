@@ -2,6 +2,7 @@ package com.hhu.myhjycommunity.system.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.hhu.myhjycommunity.system.domain.SysDictData;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
 /**
  * 字典表数据层
  */
+@Mapper
 public interface SysDictDataMapper extends BaseMapper<SysDictData> {
     /**
      * 根据条件分页查询字典数据
