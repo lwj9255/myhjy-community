@@ -1,5 +1,7 @@
 package com.hhu.myhjycommunity.web.controller.system;
 
+import com.fasterxml.jackson.databind.ser.Serializers;
+import com.hhu.myhjycommunity.common.constant.UserConstants;
 import com.hhu.myhjycommunity.common.controller.BaseController;
 import com.hhu.myhjycommunity.common.core.domain.BaseResponse;
 import com.hhu.myhjycommunity.common.core.page.PageResult;
@@ -42,6 +44,9 @@ public class SysDictTypeController extends BaseController {
      */
     @PostMapping
     public BaseResponse add(@RequestBody SysDictType dictType){
+        if(UserConstants.NOT_UNIQUE.equals(sysDictTypeService.checkDictTypeUnique(dictType.getDictType()))){
+            return BaseResponse.fail("新增字典"+dictType.getDictType()+"失败，字典类型已存在");
+        }
         dictType.setCreateBy(SecurityUtils.getUserName());
         return toAjax(sysDictTypeService.insertDictType(dictType));
     }
@@ -49,7 +54,11 @@ public class SysDictTypeController extends BaseController {
     /**
      * 修改字典类型
      */
+    @PutMapping
     public BaseResponse edit(@RequestBody SysDictType dictType){
+        if(UserConstants.NOT_UNIQUE.equals(sysDictTypeService.checkDictTypeUnique(dictType.getDictType()))){
+            return BaseResponse.fail("修改字典"+dictType.getDictType()+"失败，字典类型已存在");
+        }
         dictType.setUpdateBy(SecurityUtils.getUserName());
         return toAjax(sysDictTypeService.updateDictType(dictType));
     }
@@ -61,5 +70,14 @@ public class SysDictTypeController extends BaseController {
     public BaseResponse remove(@PathVariable  Long[] dictIds){
 
         return toAjax(sysDictTypeService.deleteDictTypeByIds(dictIds));
+    }
+
+    /**
+     * 清空缓存
+     */
+    @DeleteMapping("/clearCache")
+    public BaseResponse clearCache(){
+        sysDictTypeService.clearCache();
+        return BaseResponse.success("清除缓存成功");
     }
 }

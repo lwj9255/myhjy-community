@@ -71,4 +71,11 @@ public interface SysDictTypeMapper  extends BaseMapper<SysDictType> {
      */
     public int updateDictType(SysDictType dictType);
 
+    /**
+     * 检验字典类型名称是否唯一
+     * @param dictType
+     * @return
+     */
+    public SysDictType checkDitcTypeUnique(String dictType);
+
 }

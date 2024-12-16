@@ -69,5 +69,18 @@ public interface SysDictTypeService {
      */
     public int updateDictType(SysDictType dictType);
 
+    /**
+     * 检验字典类型名称是否唯一
+     * @param dictType
+     * @return
+     */
+    public String checkDictTypeUnique(String dictType);
+
+
+    /**
+     * 清空缓存
+     */
+    public void clearCache();
+
 
 }

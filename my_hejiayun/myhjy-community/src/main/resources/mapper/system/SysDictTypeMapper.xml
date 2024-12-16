@@ -34,10 +34,10 @@
                 AND dict_type like concat('%', #{dictType}, '%')
             </if>
             <if test="beginTime != null and beginTime != ''"><!-- 开始时间检索 -->
-                and date_format(create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+                and date_format(create_time,'%y%m%d') &gt;= date_format(#{beginTime},'%y%m%d')
             </if>
             <if test="endTime != null and endTime != ''"><!-- 结束时间检索 -->
-                and date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+                and date_format(create_time,'%y%m%d') &lt;= date_format(#{endTime},'%y%m%d')
             </if>
         </where>
     </select>
@@ -106,5 +106,10 @@
         sysdate()
         )
     </insert>
+
+    <select id="checkDitcTypeUnique" resultType="com.hhu.myhjycommunity.system.domain.SysDictType">
+        <include refid="selectDictTypeVo"/>
+        where dict_type = #{dictType} limit 1
+    </select>
 
 </mapper>
