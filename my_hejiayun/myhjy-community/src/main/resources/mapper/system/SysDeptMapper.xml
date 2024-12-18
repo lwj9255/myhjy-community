@@ -71,6 +71,10 @@
         where del_flag = '0' and parent_id = #{deptId} limit 1
     </select>
 
+    <!-- FIND_IN_SET(needle,haystack)接受两个参数
+    - 第一个参数needle是要查找的字符串。
+    - 第二个参数haystack是要搜索的逗号分隔的字符串列表。
+    -->
     <select id="selectChildrenDeptById" parameterType="Long" resultMap="SysDeptResult">
         select * from sys_dept where find_in_set(#{deptId}, ancestors)
     </select>
