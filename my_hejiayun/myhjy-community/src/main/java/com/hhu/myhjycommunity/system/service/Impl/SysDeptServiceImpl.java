@@ -1,6 +1,7 @@
 package com.hhu.myhjycommunity.system.service.Impl;
 
 import com.hhu.myhjycommunity.common.constant.UserConstants;
+import com.hhu.myhjycommunity.common.core.domain.TreeSelect;
 import com.hhu.myhjycommunity.common.core.exception.CustomException;
 import com.hhu.myhjycommunity.system.domain.SysDept;
 import com.hhu.myhjycommunity.system.mapper.SysDeptMapper;
@@ -8,8 +9,10 @@ import com.hhu.myhjycommunity.system.service.SysDeptService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class SysDeptServiceImpl implements SysDeptService {
@@ -146,6 +149,7 @@ public class SysDeptServiceImpl implements SysDeptService {
 
     /**
      * 查询部门是否存在用户
+     *
      * @param deptId 部门ID
      * @return
      */
@@ -153,5 +157,89 @@ public class SysDeptServiceImpl implements SysDeptService {
     public boolean checkDeptExistUser(Long deptId) {
         int result = sysDeptMapper.checkDeptExistUser(deptId);
         return result > 0 ? true : false;
+    }
+
+    /**
+     * 构建前端需要的下拉树结构
+     *
+     * @param sysDeptList
+     * @return
+     */
+    @Override
+    public List<TreeSelect> buildDeptTreeSelect(List<SysDept> sysDeptList) {
+        List<SysDept> deptTrees = buildDeptTree(sysDeptList);
+        List<TreeSelect> treeSelects = deptTrees.stream().map(TreeSelect::new).collect(Collectors.toList());
+
+        return treeSelects;
+    }
+
+    /**
+     * 构建部门树结构
+     *
+     * @param sysDeptList
+     * @return
+     */
+    private List<SysDept> buildDeptTree(List<SysDept> sysDeptList) {
+        // 要返回的list
+        List<SysDept> returnList = new ArrayList<>();
+
+        // 获取所有部门的deptId
+        List<Long> deptIdList = new ArrayList<>();
+        for (SysDept sysDept : sysDeptList) {
+            deptIdList.add(sysDept.getDeptId());
+        }
+
+        sysDeptList.stream()
+                .filter(dept -> !deptIdList.contains(dept.getParentId())) // 如果它的父辈编号不在deptId列表中，说明它是顶级节点
+                .forEach(dept -> {
+                    // 从顶级节点开始递归获取子节点
+                    recursionFn(sysDeptList, dept);
+                    returnList.add(dept);
+                });
+
+        return returnList;
+    }
+
+
+    /**
+     * 递归操作
+     *
+     * @param sysDeptList
+     * @param dept
+     */
+    private void recursionFn(List<SysDept> sysDeptList, SysDept dept) {
+        //得到子节点
+        List<SysDept> childList = getChildList(sysDeptList, dept);
+        dept.setChildren(childList);
+        for (SysDept child : childList) {
+            // 判断子节点是否还有子节点
+            if (hasChild(sysDeptList, child)) {
+                //递归调用
+                recursionFn(sysDeptList, child);
+            }
+        }
+    }
+
+
+    /**
+     * 获取子节点列表
+     */
+    private List<SysDept> getChildList(List<SysDept> sysDeptList, SysDept dept) {
+        List<SysDept> subList = new ArrayList<>();
+
+        subList = sysDeptList.stream()
+                // 如果父节点id不是空且父节点id=传入节点的id，说明该节点是传入节点的子节点，筛选进返回子节点列表中
+                .filter(sysDept -> !Objects.isNull(sysDept.getParentId())
+                        && sysDept.getParentId().longValue() == dept.getDeptId().longValue())
+                .collect(Collectors.toList());
+
+        return subList;
+    }
+
+    /**
+     * 判断是否有子节点
+     */
+    private boolean hasChild(List<SysDept> sysDeptList, SysDept sysDept) {
+        return getChildList(sysDeptList, sysDept).size() > 0 ? true : false;
     }
 }

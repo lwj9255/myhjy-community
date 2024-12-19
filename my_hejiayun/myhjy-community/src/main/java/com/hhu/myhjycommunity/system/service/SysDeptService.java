@@ -1,5 +1,6 @@
 package com.hhu.myhjycommunity.system.service;
 
+import com.hhu.myhjycommunity.common.core.domain.TreeSelect;
 import com.hhu.myhjycommunity.system.domain.SysDept;
 
 import java.util.List;
@@ -65,4 +66,9 @@ public interface SysDeptService {
      * @return 结果 true 存在 false 不存在
      */
     public boolean checkDeptExistUser(Long deptId);
+
+    /**
+     * 构建前端需要的下拉树结构
+     */
+    List<TreeSelect> buildDeptTreeSelect(List<SysDept> sysDeptList);
 }

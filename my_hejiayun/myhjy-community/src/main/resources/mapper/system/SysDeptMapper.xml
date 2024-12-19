@@ -30,7 +30,6 @@
     </sql>
 
 
-    <!--查询单个-->
     <select id="selectDeptList" parameterType="com.hhu.myhjycommunity.system.domain.SysDept" resultMap="SysDeptResult">
         <include refid="selectDeptVo"/>
         where d.del_flag = '0'

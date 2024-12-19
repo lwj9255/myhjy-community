@@ -6,10 +6,14 @@ import com.hhu.myhjycommunity.common.core.domain.BaseResponse;
 import com.hhu.myhjycommunity.common.utils.SecurityUtils;
 import com.hhu.myhjycommunity.system.domain.SysDept;
 import com.hhu.myhjycommunity.system.service.SysDeptService;
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Iterator;
+import java.util.List;
 
 @RestController
 @RequestMapping("/system/dept")
@@ -32,7 +36,7 @@ public class SysDeptController extends BaseController {
     /**
      * 根据部门编号获取详细信息
      */
-    @GetMapping("/{deptId")
+    @GetMapping("/{deptId}")
     public BaseResponse findDeptById(@PathVariable Long deptId){
         return BaseResponse.success(sysDeptService.selectDeptById(deptId));
     }
@@ -77,5 +81,32 @@ public class SysDeptController extends BaseController {
         }
 
         return toAjax(sysDeptService.deleteDeptById(deptId));
+    }
+
+    /**
+     * 获取部门下拉列表
+     */
+    @GetMapping("/treeselect")
+    public BaseResponse treeSelect(SysDept sysDept){
+        List<SysDept> sysDepts = sysDeptService.selectDeptList(sysDept);
+        return BaseResponse.success(sysDeptService.buildDeptTreeSelect(sysDepts));
+    }
+
+    /**
+     * 查询部门列表（排除节点）
+     */
+    @GetMapping("/list/exclude/{deptId}")
+    public BaseResponse excludeChild(@PathVariable Long deptId){
+        List<SysDept> sysDeptList = sysDeptService.selectDeptList(new SysDept());
+        Iterator<SysDept> iterator = sysDeptList.iterator();
+        while(iterator.hasNext()){
+            SysDept sysDept = (SysDept) iterator.next();
+            if(sysDept.getDeptId().intValue() == deptId ||
+                    ArrayUtils.contains(StringUtils.split(sysDept.getAncestors(),","),deptId+"")){
+                iterator.remove();
+            }
+        }
+        return BaseResponse.success(sysDeptList);
+
     }
 }

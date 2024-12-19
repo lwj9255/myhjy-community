@@ -22,6 +22,7 @@ public class SysDept extends BaseEntity {
     /**
      * 部门id
      */
+    @TableId
     private Long deptId;
     /**
      * 父部门id
