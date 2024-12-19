@@ -153,8 +153,8 @@ public class SysDictTypeServiceImpl implements SysDictTypeService {
     public void init(){
         List<SysDictType> typelist = sysDictTypeMapper.selectDictTypeAll();
         for (SysDictType sysDictType : typelist) {
-            sysDictDataMapper.selectDictDataByType(sysDictType.getDictType());
-            redisCache.setCacheObject(getCacheKey(sysDictType.getDictType()),sysDictType);
+            List<SysDictData> sysDictDataList = sysDictDataMapper.selectDictDataByType(sysDictType.getDictType());
+            redisCache.setCacheObject(getCacheKey(sysDictType.getDictType()),sysDictDataList);
         }
     }
 
