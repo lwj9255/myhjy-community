@@ -5,6 +5,7 @@ import com.hhu.myhjycommunity.common.core.exception.CustomException;
 import com.hhu.myhjycommunity.system.domain.LoginUser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  * 用户信息相关操作工具类
@@ -36,5 +37,16 @@ public class SecurityUtils {
      */
     public static Authentication getAuthentication(){
         return SecurityContextHolder.getContext().getAuthentication();
+    }
+
+    /**
+     * 对密码进行 BCryptPasswordEncoder 加密
+     * @param password
+     * @return
+     */
+    public static String encryptPassword(String password) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        return encoder.encode(password);
+
     }
 }
