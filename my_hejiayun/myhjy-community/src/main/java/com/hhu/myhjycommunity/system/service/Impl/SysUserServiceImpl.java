@@ -2,13 +2,20 @@ package com.hhu.myhjycommunity.system.service.Impl;
 
 import com.hhu.myhjycommunity.common.constant.UserConstants;
 import com.hhu.myhjycommunity.common.core.exception.CustomException;
+import com.hhu.myhjycommunity.system.domain.SysRole;
 import com.hhu.myhjycommunity.system.domain.SysUser;
+import com.hhu.myhjycommunity.system.domain.SysUserPost;
+import com.hhu.myhjycommunity.system.domain.SysUserRole;
 import com.hhu.myhjycommunity.system.mapper.SysUserMapper;
+import com.hhu.myhjycommunity.system.mapper.SysUserPostMapper;
+import com.hhu.myhjycommunity.system.mapper.SysUserRoleMapper;
 import com.hhu.myhjycommunity.system.service.SysUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -16,6 +23,12 @@ import java.util.Objects;
 public class SysUserServiceImpl implements SysUserService {
     @Autowired
     private SysUserMapper sysUserMapper;
+
+    @Autowired
+    private SysUserPostMapper sysUserPostMapper;
+
+    @Autowired
+    private SysUserRoleMapper sysUserRoleMapper;
 
     /**
      * 根据条件分页查询用户列表
@@ -203,9 +216,61 @@ public class SysUserServiceImpl implements SysUserService {
      */
     @Override
     public int insertUser(SysUser user) {
+        //新增用户
+        int rows = sysUserMapper.insertUser(user);
+        //新增用户与岗位关联
+        insertUserPost(user);
+        //新增用户与角色关联
+        insertUserRole(user);
 
-        return 0;
+        return rows;
     }
+
+    /**
+     * 新增用户与岗位关联
+     * @param user
+     */
+    private void insertUserPost(SysUser user) {
+        Long[] postIds = user.getPostIds();
+        if(!Objects.isNull(postIds)){
+            List<SysUserPost> list = new ArrayList<>();
+            for (Long postId : postIds) {
+                SysUserPost sysUserPost = new SysUserPost();
+                sysUserPost.setUserId(user.getUserId());
+                sysUserPost.setPostId(postId);
+
+                list.add(sysUserPost);
+            }
+            if (list.size() > 0) {
+                // 批量新增
+                sysUserPostMapper.batchUserPost(list);
+            }
+        }
+    }
+
+    /**
+     * 新增用户与角色关联
+     * @param user
+     */
+    private void insertUserRole(SysUser user) {
+        Long[] roleIds = user.getRoleIds();
+        if(!Objects.isNull(roleIds)){
+            List<SysUserRole> list = new ArrayList<>();
+            for (Long roleId : roleIds) {
+                SysUserRole sysUserRole = new SysUserRole();
+                sysUserRole.setUserId(user.getUserId());
+                sysUserRole.setRoleId(roleId);
+
+                list.add(sysUserRole);
+            }
+            if (list.size() > 0) {
+                // 批量新增
+                sysUserRoleMapper.batchUserRole(list);
+            }
+        }
+    }
+
+
 
 
     /**
@@ -215,8 +280,19 @@ public class SysUserServiceImpl implements SysUserService {
      * @return 结果
      */
     @Override
+    @Transactional
     public int updateUser(SysUser user) {
-        return 0;
+        Long userId = user.getUserId();
+
+        // 删除用户与角色关联
+        sysUserRoleMapper.deleteUserRoleByUserId(userId);
+        insertUserRole(user);
+
+        //删除用户与岗位关联
+        sysUserPostMapper.deleteUserPostByUserId(userId);
+        insertUserPost(user);
+
+        return sysUserMapper.updateUser(user);
     }
 
 

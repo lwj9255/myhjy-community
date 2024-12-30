@@ -78,6 +78,8 @@ public class SysUser extends BaseEntity {
     /** 岗位组 */
     private Long[] postIds;
 
+
+
     //判断当前用户是否是admin
     public boolean isAdmin() {
         return isAdmin(this.userId);
@@ -109,7 +111,7 @@ public class SysUser extends BaseEntity {
     }
 
     //序列化时忽略密码
-    @JsonIgnore
+//    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -241,6 +243,7 @@ public class SysUser extends BaseEntity {
     public void setPostIds(Long[] postIds) {
         this.postIds = postIds;
     }
+
 
     @Override
     public String toString() {

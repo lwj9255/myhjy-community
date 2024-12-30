@@ -2,9 +2,11 @@ package com.hhu.myhjycommunity.system.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.hhu.myhjycommunity.system.domain.SysUserPost;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
+@Mapper
 public interface SysUserPostMapper extends BaseMapper<SysUserPost>
 {
     /**

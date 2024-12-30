@@ -80,6 +80,10 @@ public class SysRole extends BaseEntity {
         this.deptIds = deptIds;
     }
 
+    public SysRole(Long roleId) {
+        this.roleId = roleId;
+    }
+
     public SysRole() {
     }
 

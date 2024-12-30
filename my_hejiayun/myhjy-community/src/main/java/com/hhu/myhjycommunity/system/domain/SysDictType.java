@@ -29,9 +29,6 @@ public class SysDictType extends BaseEntity {
     @Excel(name = "状态",replace = {"正常_0","停用_1"})
     private String status;
 
-    private String beginTime;
-
-    private String endTime;
 
     public Long getDictId()
     {
@@ -77,21 +74,6 @@ public class SysDictType extends BaseEntity {
         this.status = status;
     }
 
-    public String getBeginTime() {
-        return beginTime;
-    }
-
-    public void setBeginTime(String beginTime) {
-        this.beginTime = beginTime;
-    }
-
-    public String getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
-    }
 
     @Override
     public String toString() {
