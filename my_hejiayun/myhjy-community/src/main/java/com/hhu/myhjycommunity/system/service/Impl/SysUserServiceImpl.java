@@ -304,7 +304,7 @@ public class SysUserServiceImpl implements SysUserService {
      */
     @Override
     public int deleteUserById(Long userId) {
-        return 0;
+        return sysUserMapper.deleteUserById(userId);
     }
 
     /**
@@ -315,6 +315,6 @@ public class SysUserServiceImpl implements SysUserService {
      */
     @Override
     public int deleteUserByIds(Long[] userIds) {
-        return 0;
+        return sysUserMapper.deleteUserByIds(userIds);
     }
 }
